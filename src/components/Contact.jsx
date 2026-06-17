@@ -10,7 +10,7 @@ import Footer from './Footer';
 // directly into a connected Google Sheet.
 // ─────────────────────────────────────────────
 const GOOGLE_SCRIPT_URL =
-    'https://script.google.com/macros/s/AKfycbyvJvSF7X5Q0SAUZElCJQpcv3zUuc0SRUQRjarzXOCAS9sv-hDFT2I7xSFyiJqjn_9OLQ/exec';
+    'https://script.google.com/macros/s/AKfycbyDGP5obelVwsX0Llf8GoCeiXMSxj_O1ijy4g9fsGmAjUHLe6NV_9MV75SXsjG1ToA5/exec';
 
 
 // ─────────────────────────────────────────────
@@ -159,23 +159,42 @@ const Contact = () => {
         console.log('[Contact Form] Sending data to Google Sheets…');
 
         try {
-            // 3. Encode as query string
-            //    GET requests are universally accepted without preflight.
-            //    The Apps Script will read this via e.parameter in doGet.
-            const params = new URLSearchParams({
+            // 3. Encode POST body.
+            // The Apps Script should accept POST via doPost.
+            const trimmedData = {
                 name: formData.name.trim(),
-                email: formData.email.trim(),
                 number: formData.number.trim(),
+                email: formData.email.trim(),
                 message: formData.message.trim(),
+            };
+            
+            console.log('[Contact Form] Trimmed Data:', trimmedData);
+            
+            const params = new URLSearchParams(trimmedData);
+            const fullUrl = GOOGLE_SCRIPT_URL;
+            
+            console.log('[Contact Form] Full URL being sent:', fullUrl);
+            console.log('[Contact Form] Body being sent:', params.toString());
+
+            // 4. POST → Google Apps Script
+            const response = await fetch(fullUrl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                },
+                body: params.toString(),
             });
 
-            // 4. GET → Google Apps Script
-            const response = await fetch(`${GOOGLE_SCRIPT_URL}?${params.toString()}`, {
-                method: 'GET',
-                mode: 'no-cors',
-            });
+            const responseBody = await response.text();
+            console.log('[Contact Form] Response status:', response.status);
+            console.log('[Contact Form] Response ok:', response.ok);
+            console.log('[Contact Form] Response body:', responseBody);
+            console.log('[Contact Form] Data sent with parameters:', Object.keys(trimmedData));
 
-            console.log('[Contact Form] Response (opaque):', response.type, response.status);
+            if (!response.ok) {
+                throw new Error(`Submission failed with status ${response.status}. Response: ${responseBody}`);
+            }
 
             // 5. Success — clear form and notify user
             setFormData({ name: '', email: '', number: '', message: '' });
