@@ -860,8 +860,8 @@ p {
 }
 
 
-/* Designs Section */
-.designs-section {
+/* Projects Section */
+.Projects-section {
   padding-bottom: 50px;
 }
 
@@ -925,7 +925,7 @@ p {
   width: 100%;
 }
 
-.designs-footer {
+.Projects-footer {
   margin-top: 100px;
   padding: 25px;
   background-color: var(--bg-card);
@@ -965,7 +965,7 @@ p {
 }
 
 @media (max-width: 768px) {
-  .designs-footer {
+  .Projects-footer {
     margin-top: 60px;
     padding: 20px 15px;
   }

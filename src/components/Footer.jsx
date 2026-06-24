@@ -4,7 +4,7 @@ import { Mail } from 'lucide-react';
 const Footer = () => {
     const currentYear = new Date().getFullYear();
     return (
-        <footer className="designs-footer">
+        <footer className="Projects-footer">
             <div className="footer-content">
                 <span className="copyright">© {currentYear} All Rights Reserved</span>
                 <span className="footer-email-container">

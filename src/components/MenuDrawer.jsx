@@ -6,7 +6,7 @@ const MenuDrawer = ({ isOpen, onClose, onNavigate, isEmbedded = false }) => {
     const menuItems = [
         { label: 'HOME', value: 'home' },
         { label: 'EDUCATION', value: 'education' },
-        { label: 'DESIGNS', value: 'designs' },
+        { label: 'PROJECTS', value: 'Projects' },
         { label: 'EXPERIENCE', value: 'experience' },
         { label: 'CONTACT', value: 'contact' },
     ];

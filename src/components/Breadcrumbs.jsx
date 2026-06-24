@@ -8,7 +8,7 @@ const Breadcrumbs = ({ currentView, onNavigate }) => {
     const getLabel = (view) => {
         switch (view) {
             case 'education': return 'Education';
-            case 'designs': return 'Designs';
+            case 'Projects': return 'Projects';
             case 'experience': return 'Experience';
             case 'contact': return 'Contact';
             default: return view.toUpperCase();

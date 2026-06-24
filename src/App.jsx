@@ -7,7 +7,7 @@ import Stats from './components/Stats';
 import Services from './components/Services';
 import Education from './components/Education';
 import Experience from './components/Experience';
-import Designs from './components/Designs';
+import Projects from './components/Projects';
 import Contact from './components/Contact';
 import NavRail from './components/NavRail';
 import MenuDrawer from './components/MenuDrawer';
@@ -72,7 +72,7 @@ function App() {
       initial: { rotateX: -90, y: '50%', opacity: 0 },
       animate: { rotateX: 0, y: 0, opacity: 1 }
     },
-    designs: {
+    Projects: {
       initial: { rotateY: 90, x: '-50%', opacity: 0 },
       animate: { rotateY: 0, x: 0, opacity: 1 }
     },
@@ -159,7 +159,7 @@ function App() {
 
                 {view === 'home' && (
                   <div className="page-side">
-                    <Hero onExplore={() => toggleView('designs')} />
+                    <Hero onExplore={() => toggleView('Projects')} />
                     <Stats />
                     <Services onOrder={() => toggleView('contact')} />
                     <Footer />
@@ -168,7 +168,7 @@ function App() {
 
                 {view === 'education' && <div className="page-side"><Education /></div>}
                 {view === 'experience' && <div className="page-side"><Experience /></div>}
-                {view === 'designs' && <div className="page-side"><Designs /></div>}
+                {view === 'Projects' && <div className="page-side"><Projects /></div>}
                 {view === 'contact' && <div className="page-side"><Contact /></div>}
               </motion.div>
             </AnimatePresence>

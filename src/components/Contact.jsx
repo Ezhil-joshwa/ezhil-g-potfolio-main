@@ -159,42 +159,30 @@ const Contact = () => {
         console.log('[Contact Form] Sending data to Google Sheets…');
 
         try {
-            // 3. Encode POST body.
-            // The Apps Script should accept POST via doPost.
+            // 3. Build GET URL with params appended.
+            // GET requests survive the Google Apps Script 302 redirect
+            // correctly — POST drops the body on redirect (HTTP spec).
             const trimmedData = {
                 name: formData.name.trim(),
                 number: formData.number.trim(),
                 email: formData.email.trim(),
                 message: formData.message.trim(),
             };
-            
-            console.log('[Contact Form] Trimmed Data:', trimmedData);
-            
-            const params = new URLSearchParams(trimmedData);
-            const fullUrl = GOOGLE_SCRIPT_URL;
-            
-            console.log('[Contact Form] Full URL being sent:', fullUrl);
-            console.log('[Contact Form] Body being sent:', params.toString());
 
-            // 4. POST → Google Apps Script
-            const response = await fetch(fullUrl, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                },
-                body: params.toString(),
+            console.log('[Contact Form] Trimmed Data:', trimmedData);
+
+            const params = new URLSearchParams(trimmedData);
+            const fullUrl = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
+
+            console.log('[Contact Form] GET URL:', fullUrl);
+
+            // 4. GET → Google Apps Script (no-cors avoids CORS preflight errors)
+            await fetch(fullUrl, {
+                method: 'GET',
+                mode: 'no-cors',
             });
 
-            const responseBody = await response.text();
-            console.log('[Contact Form] Response status:', response.status);
-            console.log('[Contact Form] Response ok:', response.ok);
-            console.log('[Contact Form] Response body:', responseBody);
-            console.log('[Contact Form] Data sent with parameters:', Object.keys(trimmedData));
-
-            if (!response.ok) {
-                throw new Error(`Submission failed with status ${response.status}. Response: ${responseBody}`);
-            }
+            console.log('[Contact Form] ✅ Request sent successfully');
 
             // 5. Success — clear form and notify user
             setFormData({ name: '', email: '', number: '', message: '' });
